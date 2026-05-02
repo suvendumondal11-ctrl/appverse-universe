@@ -1,0 +1,150 @@
+// Version: 1.0.0
+type CreatorLevel__550148163 = {#Builder; #Creator; #Dreamer; #Legend};
+type CreatorStats__352507662 =
+  {
+    ideasGenerated : Nat;
+    level : CreatorLevel__550148163;
+    streak : Nat;
+    totalLikes : Nat;
+    totalRemixes : Nat;
+    totalXp : Nat;
+    userId : Principal
+  };
+type Data__791452850<K, V> =
+  {var count : Nat__490723111; kvs : [var ?(K, V)]};
+type Int__270357528 = Int__616954475;
+type Int__616954475 = Int;
+type Internal__8484328<K, V> =
+  {children : [var ?Node__46230540<K, V>]; data : Data__791452850<K, V>};
+type Leaf__809889148<K, V> = {data : Data__791452850<K, V>};
+type Nat__490723111 = Nat__920180692;
+type Nat__920180692 = Nat;
+type Node__46230540<K, V> =
+  {#internal : Internal__8484328<K, V>; #leaf : Leaf__809889148<K, V>};
+type ProjectId__478417951 = Nat;
+type ProjectStatus__886440159 = {#active; #deployed; #draft};
+type Project__614212307 =
+  {
+    createdAt : Timestamp__301639476;
+    description : Text;
+    featureList : [Text];
+    id : ProjectId__478417951;
+    name : Text;
+    owner : UserId__158757552;
+    status : ProjectStatus__886440159;
+    tags : [Text];
+    updatedAt : Timestamp__301639476
+  };
+type PublicIdea__153560323 =
+  {
+    appName : Text;
+    category : Text;
+    colorTheme : Text;
+    createdAt : Timestamp__301639476;
+    creatorId : Principal;
+    creatorName : Text;
+    description : Text;
+    earningModel : Text;
+    features : [Text];
+    id : Nat;
+    isPublic : Bool;
+    likeCount : Nat;
+    marketScore : Nat;
+    monetizationScore : Nat;
+    remixCount : Nat;
+    successScore : Nat;
+    uniquenessScore : Nat;
+    viewCount : Nat;
+    viralScore : Nat
+  };
+type TemplateId__141868339 = Nat;
+type Template__810944557 =
+  {
+    category : Text;
+    description : Text;
+    featureList : [Text];
+    id : TemplateId__141868339;
+    name : Text
+  };
+type Time__796480547 = Int__270357528;
+type Time__900049286 = Time__796480547;
+type Timestamp__301639476 = Time__900049286;
+type UserId__158757552 = Principal;
+type UserProfile__190304746 =
+  {
+    createdAt : Timestamp__301639476;
+    displayName : Text;
+    totalProjects : Nat;
+    userId : UserId__158757552
+  };
+actor {
+  stable fallbackTrends : [Text];
+  stable ic :
+    actor {
+      http_request :
+        shared {
+                 body : ?Blob;
+                 headers : [{name : Text; value : Text}];
+                 is_replicated : ?Bool;
+                 max_response_bytes : ?Nat64;
+                 method : {#get; #head; #post};
+                 transform :
+                   ?{
+                      context : Blob;
+                      function :
+                        shared query {
+                                       context : Blob;
+                                       response :
+                                         {
+                                           body : Blob;
+                                           headers :
+                                             [{name : Text; value : Text}];
+                                           status : Nat
+                                         }
+                                     } ->
+                          async
+                            {
+                              body : Blob;
+                              headers : [{name : Text; value : Text}];
+                              status : Nat
+                            }
+                    };
+                 url : Text
+               } ->
+          async
+            {
+              body : Blob;
+              headers : [{name : Text; value : Text}];
+              status : Nat
+            }
+    };
+  stable ideasMap :
+    {
+      var root : Node__46230540<Nat, PublicIdea__153560323>;
+      var size : Nat__490723111
+    };
+  stable nextIdeaId : [var Nat];
+  stable nextProjectId : [var Nat];
+  stable profiles :
+    {
+      var root : Node__46230540<UserId__158757552, UserProfile__190304746>;
+      var size : Nat__490723111
+    };
+  stable projects :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Project__614212307]];
+      var elementIndex : Nat__490723111
+    };
+  stable statsMap :
+    {
+      var root : Node__46230540<UserId__158757552, CreatorStats__352507662>;
+      var size : Nat__490723111
+    };
+  stable templates :
+    {
+      var blockIndex : Nat__490723111;
+      var blocks : [var [var ?Template__810944557]];
+      var elementIndex : Nat__490723111
+    }
+};

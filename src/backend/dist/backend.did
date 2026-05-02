@@ -1,0 +1,158 @@
+type XpAction = 
+ variant {
+   GenerateIdea;
+   ReceiveLike;
+   RemixIdea;
+   ShareIdea;
+ };
+type UserProfile = 
+ record {
+   createdAt: Timestamp;
+   displayName: text;
+   totalProjects: nat;
+   userId: UserId;
+ };
+type UserId = principal;
+type UpdateProjectInput = 
+ record {
+   description: text;
+   featureList: vec text;
+   name: text;
+   status: ProjectStatus;
+   tags: vec text;
+ };
+type Timestamp = int;
+type TemplateId = nat;
+type Template = 
+ record {
+   category: text;
+   description: text;
+   featureList: vec text;
+   id: TemplateId;
+   name: text;
+ };
+type PublishIdeaInput = 
+ record {
+   appName: text;
+   category: text;
+   colorTheme: text;
+   description: text;
+   earningModel: text;
+   features: vec text;
+ };
+type PublicIdea = 
+ record {
+   appName: text;
+   category: text;
+   colorTheme: text;
+   createdAt: Timestamp;
+   creatorId: principal;
+   creatorName: text;
+   description: text;
+   earningModel: text;
+   features: vec text;
+   id: nat;
+   isPublic: bool;
+   likeCount: nat;
+   marketScore: nat;
+   monetizationScore: nat;
+   remixCount: nat;
+   successScore: nat;
+   uniquenessScore: nat;
+   viewCount: nat;
+   viralScore: nat;
+ };
+type ProjectStatus = 
+ variant {
+   active;
+   deployed;
+   draft;
+ };
+type ProjectId = nat;
+type Project = 
+ record {
+   createdAt: Timestamp;
+   description: text;
+   featureList: vec text;
+   id: ProjectId;
+   name: text;
+   owner: UserId;
+   status: ProjectStatus;
+   tags: vec text;
+   updatedAt: Timestamp;
+ };
+type LeaderboardEntry = 
+ record {
+   displayName: text;
+   ideasCount: nat;
+   level: CreatorLevel;
+   rank: nat;
+   totalXp: nat;
+   userId: principal;
+ };
+type CreatorStats = 
+ record {
+   ideasGenerated: nat;
+   level: CreatorLevel;
+   streak: nat;
+   totalLikes: nat;
+   totalRemixes: nat;
+   totalXp: nat;
+   userId: principal;
+ };
+type CreatorLevel = 
+ variant {
+   Builder;
+   Creator;
+   Dreamer;
+   Legend;
+ };
+type CreateProjectInput = 
+ record {
+   description: text;
+   featureList: vec text;
+   name: text;
+   tags: vec text;
+ };
+type AiFeatureSuggestion = 
+ record {
+   category: text;
+   description: text;
+   id: nat;
+   priority: nat;
+   title: text;
+ };
+service : {
+  awardXpForAction: (action: XpAction) -> (nat);
+  createProject: (input: CreateProjectInput) -> (Project);
+  deleteProject: (id: ProjectId) -> (bool);
+  generate: (prompt: text, device: text) ->
+   (record {
+      ai: text;
+      image: text;
+      lucky: text;
+      trend: text;
+    });
+  getAiSuggestions: (projectId: ProjectId) -> (vec AiFeatureSuggestion) query;
+  getLeaderboard: (limit: nat) -> (vec LeaderboardEntry) query;
+  getMyProfile: () -> (UserProfile);
+  getMyStats: () -> (CreatorStats);
+  getProject: (id: ProjectId) -> (opt Project) query;
+  getPublicIdea: (ideaId: nat) -> (opt PublicIdea) query;
+  getTemplate: (id: TemplateId) -> (opt Template) query;
+  incrementViewCount: (ideaId: nat) -> ();
+  likeIdea: (ideaId: nat) -> (nat);
+  listMyProjects: () -> (vec Project) query;
+  listPublicIdeas: (sort: variant {
+                            mostLiked;
+                            mostRemixed;
+                            newest;
+                            trending;
+                          }, category: opt text, limit: nat) ->
+   (vec PublicIdea) query;
+  listTemplates: (category: opt text) -> (vec Template) query;
+  publishIdea: (input: PublishIdeaInput) -> (nat);
+  remixIdea: (ideaId: nat) -> (PublicIdea);
+  updateDisplayName: (name: text) -> (bool);
+  updateProject: (id: ProjectId, input: UpdateProjectInput) -> (bool);
+}

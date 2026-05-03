@@ -67,6 +67,23 @@ const NAV_LINKS = [
     magic: false,
     dream: true,
   },
+  {
+    label: "⚡ Genesis",
+    to: "/genesis",
+    icon: null,
+    magic: false,
+    dream: false,
+    genesis: true,
+  },
+  {
+    label: "🧠 Twin Life",
+    to: "/twin-life",
+    icon: null,
+    magic: false,
+    dream: false,
+    genesis: false,
+    twinLife: true,
+  },
 ] as const;
 
 export function Navbar() {
@@ -111,30 +128,43 @@ export function Navbar() {
 
         {/* Nav links — desktop */}
         <nav className="hidden md:flex items-center gap-1 ml-2">
-          {NAV_LINKS.map(({ label, to, icon: Icon, magic, dream }) => (
-            <Link
-              key={label}
-              to={to}
-              data-ocid={`navbar.${label.toLowerCase().replace(/[^a-z0-9]/g, "")}_link`}
-              className={cn(
-                "px-3 py-1.5 rounded-md text-sm font-body font-medium transition-smooth flex items-center gap-1.5",
-                dream
-                  ? pathname === to
-                    ? "bg-[var(--twin-dreamer)]/20 text-[var(--twin-dreamer)] border border-[var(--twin-dreamer)]/40 shadow-[0_0_12px_color-mix(in_oklch,var(--twin-dreamer)_35%,transparent)]"
-                    : "text-[var(--twin-dreamer)] border border-[var(--twin-dreamer)]/25 bg-[var(--twin-dreamer)]/8 hover:bg-[var(--twin-dreamer)]/15 hover:border-[var(--twin-dreamer)]/50 hover:shadow-[0_0_14px_color-mix(in_oklch,var(--twin-dreamer)_40%,transparent)] animate-[glow-pulse_2s_ease-in-out_infinite]"
-                  : magic
+          {NAV_LINKS.map((item) => {
+            const { label, to, icon: Icon, magic, dream } = item;
+            const genesis = "genesis" in item && item.genesis;
+            const twinLife = "twinLife" in item && item.twinLife;
+            return (
+              <Link
+                key={label}
+                to={to}
+                data-ocid={`navbar.${label.toLowerCase().replace(/[^a-z0-9]/g, "")}_link`}
+                className={cn(
+                  "px-3 py-1.5 rounded-md text-sm font-body font-medium transition-smooth flex items-center gap-1.5",
+                  twinLife
                     ? pathname === to
-                      ? "bg-amber-500/20 text-amber-400 border border-amber-400/40 shadow-[0_0_12px_rgba(251,191,36,0.35)]"
-                      : "text-amber-400 border border-amber-400/25 bg-amber-400/8 hover:bg-amber-400/15 hover:border-amber-400/50 hover:shadow-[0_0_14px_rgba(251,191,36,0.4)] animate-[glow-pulse_2s_ease-in-out_infinite]"
-                    : pathname === to
-                      ? "bg-primary/15 text-primary border border-primary/20"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/40",
-              )}
-            >
-              {Icon && <Icon className="h-3.5 w-3.5 shrink-0" />}
-              {label}
-            </Link>
-          ))}
+                      ? "bg-[oklch(var(--automation-neural)/0.2)] text-[oklch(var(--automation-neural))] border border-[oklch(var(--automation-neural)/0.5)] shadow-[0_0_14px_oklch(var(--automation-neural)/0.4)]"
+                      : "text-[oklch(var(--automation-neural))] border border-[oklch(var(--automation-neural)/0.3)] bg-[oklch(var(--automation-neural)/0.08)] hover:bg-[oklch(var(--automation-neural)/0.15)] hover:border-[oklch(var(--automation-neural)/0.6)] hover:shadow-[0_0_16px_oklch(var(--automation-neural)/0.4)] animate-[glow-pulse_2.5s_ease-in-out_infinite]"
+                    : genesis
+                      ? pathname === to
+                        ? "bg-[oklch(var(--genesis-gold)/0.2)] text-[oklch(var(--genesis-gold))] border border-[oklch(var(--genesis-gold)/0.5)] shadow-[0_0_14px_oklch(var(--genesis-gold)/0.4)]"
+                        : "text-[oklch(var(--genesis-gold))] border border-[oklch(var(--genesis-gold)/0.3)] bg-[oklch(var(--genesis-gold)/0.08)] hover:bg-[oklch(var(--genesis-gold)/0.15)] hover:border-[oklch(var(--genesis-gold)/0.6)] hover:shadow-[0_0_16px_oklch(var(--genesis-gold)/0.4)] animate-[glow-pulse_2.5s_ease-in-out_infinite]"
+                      : dream
+                        ? pathname === to
+                          ? "bg-[var(--twin-dreamer)]/20 text-[var(--twin-dreamer)] border border-[var(--twin-dreamer)]/40 shadow-[0_0_12px_color-mix(in_oklch,var(--twin-dreamer)_35%,transparent)]"
+                          : "text-[var(--twin-dreamer)] border border-[var(--twin-dreamer)]/25 bg-[var(--twin-dreamer)]/8 hover:bg-[var(--twin-dreamer)]/15 hover:border-[var(--twin-dreamer)]/50 hover:shadow-[0_0_14px_color-mix(in_oklch,var(--twin-dreamer)_40%,transparent)] animate-[glow-pulse_2s_ease-in-out_infinite]"
+                        : magic
+                          ? pathname === to
+                            ? "bg-amber-500/20 text-amber-400 border border-amber-400/40 shadow-[0_0_12px_rgba(251,191,36,0.35)]"
+                            : "text-amber-400 border border-amber-400/25 bg-amber-400/8 hover:bg-amber-400/15 hover:border-amber-400/50 hover:shadow-[0_0_14px_rgba(251,191,36,0.4)] animate-[glow-pulse_2s_ease-in-out_infinite]"
+                          : pathname === to
+                            ? "bg-primary/15 text-primary border border-primary/20"
+                            : "text-muted-foreground hover:text-foreground hover:bg-muted/40",
+                )}
+              >
+                {Icon && <Icon className="h-3.5 w-3.5 shrink-0" />}
+                {label}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="flex-1" />
@@ -245,31 +275,44 @@ export function Navbar() {
           className="md:hidden border-t border-border/30 bg-card backdrop-blur-xl px-4 py-3 flex flex-col gap-1"
           data-ocid="navbar.mobile_nav"
         >
-          {NAV_LINKS.map(({ label, to, icon: Icon, magic, dream }) => (
-            <Link
-              key={label}
-              to={to}
-              data-ocid={`navbar.mobile.${label.toLowerCase().replace(/[^a-z0-9]/g, "")}_link`}
-              onClick={() => setMobileOpen(false)}
-              className={cn(
-                "px-3 py-2 rounded-md text-sm font-body font-medium transition-smooth flex items-center gap-2",
-                dream
-                  ? pathname === to
-                    ? "bg-[var(--twin-dreamer)]/20 text-[var(--twin-dreamer)] border border-[var(--twin-dreamer)]/40"
-                    : "text-[var(--twin-dreamer)] border border-[var(--twin-dreamer)]/20 bg-[var(--twin-dreamer)]/6 hover:bg-[var(--twin-dreamer)]/12 hover:border-[var(--twin-dreamer)]/40"
-                  : magic
+          {NAV_LINKS.map((item) => {
+            const { label, to, icon: Icon, magic, dream } = item;
+            const genesis = "genesis" in item && item.genesis;
+            const twinLife = "twinLife" in item && item.twinLife;
+            return (
+              <Link
+                key={label}
+                to={to}
+                data-ocid={`navbar.mobile.${label.toLowerCase().replace(/[^a-z0-9]/g, "")}_link`}
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  "px-3 py-2 rounded-md text-sm font-body font-medium transition-smooth flex items-center gap-2",
+                  twinLife
                     ? pathname === to
-                      ? "bg-amber-500/20 text-amber-400 border border-amber-400/40"
-                      : "text-amber-400 border border-amber-400/20 bg-amber-400/6 hover:bg-amber-400/12 hover:border-amber-400/40"
-                    : pathname === to
-                      ? "bg-primary/15 text-primary border border-primary/20"
-                      : "text-muted-foreground hover:text-foreground hover:bg-muted/40",
-              )}
-            >
-              {Icon && <Icon className="h-3.5 w-3.5 shrink-0" />}
-              {label}
-            </Link>
-          ))}
+                      ? "bg-[oklch(var(--automation-neural)/0.2)] text-[oklch(var(--automation-neural))] border border-[oklch(var(--automation-neural)/0.5)]"
+                      : "text-[oklch(var(--automation-neural))] border border-[oklch(var(--automation-neural)/0.25)] bg-[oklch(var(--automation-neural)/0.06)] hover:bg-[oklch(var(--automation-neural)/0.12)] hover:border-[oklch(var(--automation-neural)/0.45)]"
+                    : genesis
+                      ? pathname === to
+                        ? "bg-[oklch(var(--genesis-gold)/0.2)] text-[oklch(var(--genesis-gold))] border border-[oklch(var(--genesis-gold)/0.5)]"
+                        : "text-[oklch(var(--genesis-gold))] border border-[oklch(var(--genesis-gold)/0.25)] bg-[oklch(var(--genesis-gold)/0.06)] hover:bg-[oklch(var(--genesis-gold)/0.12)] hover:border-[oklch(var(--genesis-gold)/0.45)]"
+                      : dream
+                        ? pathname === to
+                          ? "bg-[var(--twin-dreamer)]/20 text-[var(--twin-dreamer)] border border-[var(--twin-dreamer)]/40"
+                          : "text-[var(--twin-dreamer)] border border-[var(--twin-dreamer)]/20 bg-[var(--twin-dreamer)]/6 hover:bg-[var(--twin-dreamer)]/12 hover:border-[var(--twin-dreamer)]/40"
+                        : magic
+                          ? pathname === to
+                            ? "bg-amber-500/20 text-amber-400 border border-amber-400/40"
+                            : "text-amber-400 border border-amber-400/20 bg-amber-400/6 hover:bg-amber-400/12 hover:border-amber-400/40"
+                          : pathname === to
+                            ? "bg-primary/15 text-primary border border-primary/20"
+                            : "text-muted-foreground hover:text-foreground hover:bg-muted/40",
+                )}
+              >
+                {Icon && <Icon className="h-3.5 w-3.5 shrink-0" />}
+                {label}
+              </Link>
+            );
+          })}
           {stats && xpLevel && (
             <div className="mt-2 px-3 py-2 flex items-center gap-2">
               <LevelBadge level={xpLevel} size="sm" showName={false} />

@@ -46,6 +46,20 @@ const TABS: Tab[] = [
     ocid: "bottom_tab.dream",
   },
   {
+    id: "genesis",
+    emoji: "⚡",
+    label: "Genesis",
+    path: "/genesis",
+    ocid: "bottom_tab.genesis",
+  },
+  {
+    id: "twin",
+    emoji: "🧠",
+    label: "Twin",
+    path: "/twin-life",
+    ocid: "bottom_tab.twin",
+  },
+  {
     id: "profile",
     emoji: "👤",
     label: "Profile",
@@ -102,11 +116,15 @@ export function BottomTabBar() {
                     background:
                       tab.id === "dream"
                         ? "var(--twin-dreamer)"
-                        : "oklch(var(--primary))",
+                        : tab.id === "twin"
+                          ? "oklch(var(--automation-neural))"
+                          : "oklch(var(--primary))",
                     boxShadow:
                       tab.id === "dream"
                         ? "0 0 8px color-mix(in oklch, var(--twin-dreamer) 80%, transparent)"
-                        : "0 0 8px oklch(var(--primary) / 0.8)",
+                        : tab.id === "twin"
+                          ? "0 0 8px oklch(var(--automation-neural) / 0.8)"
+                          : "0 0 8px oklch(var(--primary) / 0.8)",
                   }}
                   transition={{ type: "spring", stiffness: 500, damping: 35 }}
                 />
@@ -121,7 +139,9 @@ export function BottomTabBar() {
                   filter: active
                     ? tab.id === "dream"
                       ? "drop-shadow(0 0 6px var(--twin-dreamer))"
-                      : "drop-shadow(0 0 6px oklch(var(--primary) / 0.7))"
+                      : tab.id === "twin"
+                        ? "drop-shadow(0 0 6px oklch(var(--automation-neural) / 0.8))"
+                        : "drop-shadow(0 0 6px oklch(var(--primary) / 0.7))"
                     : "none",
                 }}
               >
@@ -135,12 +155,16 @@ export function BottomTabBar() {
                   color: active
                     ? tab.id === "dream"
                       ? "var(--twin-dreamer)"
-                      : "oklch(var(--primary))"
+                      : tab.id === "twin"
+                        ? "oklch(var(--automation-neural))"
+                        : "oklch(var(--primary))"
                     : "oklch(0.58 0 0)",
                   textShadow: active
                     ? tab.id === "dream"
                       ? "0 0 10px color-mix(in oklch, var(--twin-dreamer) 50%, transparent)"
-                      : "0 0 10px oklch(var(--primary) / 0.5)"
+                      : tab.id === "twin"
+                        ? "0 0 10px oklch(var(--automation-neural) / 0.5)"
+                        : "0 0 10px oklch(var(--primary) / 0.5)"
                     : "none",
                 }}
               >

@@ -1,6 +1,7 @@
 import { SkeletonGrid } from "@/components/ui/SkeletonCard";
 import { XpToastContainer } from "@/components/ui/XpToastContainer";
 import { Toaster } from "@/components/ui/sonner";
+import GenesisPage from "@/pages/Genesis";
 import {
   Outlet,
   RouterProvider,
@@ -23,6 +24,7 @@ const LiveDataPage = lazy(() => import("@/pages/LiveData"));
 const MagicEnginePage = lazy(() => import("@/pages/MagicEngine"));
 const TransformCanvasPage = lazy(() => import("@/pages/TransformCanvas"));
 const DreamWorldPage = lazy(() => import("@/pages/DreamWorld"));
+const DigitalTwinLifePage = lazy(() => import("@/pages/DigitalTwinLife"));
 
 function PageLoader() {
   return (
@@ -162,12 +164,42 @@ const transformRoute = createRoute({
   ),
 });
 
+const genesisRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/genesis",
+  component: () => (
+    <Suspense fallback={<PageLoader />}>
+      <GenesisPage />
+    </Suspense>
+  ),
+});
+
+const twinLifeRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/twin-life",
+  component: () => (
+    <Suspense fallback={<PageLoader />}>
+      <DigitalTwinLifePage />
+    </Suspense>
+  ),
+});
+
 const dreamWorldRoute = createRoute({
   getParentRoute: () => rootRoute,
   path: "/dream-world",
   component: () => (
     <Suspense fallback={<PageLoader />}>
       <DreamWorldPage />
+    </Suspense>
+  ),
+});
+
+const digitalTwinLifeRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  path: "/digital-twin-life",
+  component: () => (
+    <Suspense fallback={<PageLoader />}>
+      <DigitalTwinLifePage />
     </Suspense>
   ),
 });
@@ -186,6 +218,9 @@ const routeTree = rootRoute.addChildren([
   magicRoute,
   transformRoute,
   dreamWorldRoute,
+  twinLifeRoute,
+  genesisRoute,
+  digitalTwinLifeRoute,
 ]);
 
 const router = createRouter({ routeTree });

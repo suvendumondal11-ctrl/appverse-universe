@@ -195,6 +195,28 @@ export default {
           "from": { width: "0" },
           "to": { width: "100%" },
         },
+        "automation-node-pulse": {
+          "0%, 100%": {
+            boxShadow: "0 0 24px oklch(var(--automation-neural) / 0.4), inset 0 0 24px oklch(var(--automation-neural) / 0.1), 0 0 36px oklch(var(--automation-decision) / 0.2)",
+            transform: "scale(1)"
+          },
+          "50%": {
+            boxShadow: "0 0 40px oklch(var(--automation-neural) / 0.6), inset 0 0 32px oklch(var(--automation-neural) / 0.15), 0 0 52px oklch(var(--automation-decision) / 0.35)",
+            transform: "scale(1.06)"
+          }
+        },
+        "confidence-spin": {
+          "from": { transform: "rotate(0deg)" },
+          "to": { transform: "rotate(360deg)" }
+        },
+        "sync-pulse": {
+          "0%, 100%": { opacity: "0.4", transform: "scale(1)" },
+          "50%": { opacity: "1", transform: "scale(1.3)" }
+        },
+        "activity-pulse-in": {
+          "from": { opacity: "0", transform: "translateX(-8px)" },
+          "to": { opacity: "1", transform: "translateX(0)" }
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -219,6 +241,10 @@ export default {
         "legendary-cinematic": "legendary-cinematic 2s cubic-bezier(0.34, 1.56, 0.64, 1)",
         "hologram-shift": "hologram-shift 4s ease-in-out infinite",
         "progress-fill": "progress-fill 0.8s ease-out",
+        "automation-node-pulse": "automation-node-pulse 2.4s ease-in-out infinite",
+        "confidence-spin": "confidence-spin 3s linear infinite",
+        "sync-pulse": "sync-pulse 1.5s ease-in-out infinite",
+        "activity-pulse-in": "activity-pulse-in 0.4s cubic-bezier(0.4, 0, 0.2, 1)",
       },
     },
   },
